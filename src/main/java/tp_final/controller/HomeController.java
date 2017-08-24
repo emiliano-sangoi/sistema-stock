@@ -16,5 +16,10 @@ public class HomeController {
     	return "home";
     }	
 	
+	@RequestMapping(value = {"/acerca-de"})
+    public String about(Model model) {		 
+    	return "acerca_de";
+    }	
+	
 
 }

@@ -7,16 +7,29 @@
     
     <definition name="base-template" template="/WEB-INF/template/template.jsp">
     	<put-attribute name="title" value=""  />     
-        <put-attribute name="header"  value="/WEB-INF/template/header.jsp" />
-        <put-attribute name="body" value="" />
-        <put-attribute name="footer"  value="/WEB-INF/template/footer.jsp" />
+        <put-attribute name="sidebar"  value="/WEB-INF/template/sidebar.jsp" />
+        <put-attribute name="page-content"  value="" />
     </definition>
 
     <definition name="home" extends="base-template">
-    	<put-attribute name="title" value="Home"  />
-        <put-attribute name="body" value="/WEB-INF/views/home.jsp" />
+    	<put-attribute name="title" value="SGS - Home"  />
+        <put-attribute name="page-content"  value="/WEB-INF/views/home.jsp" />
     </definition>
     
+    <definition name="acerca_de" extends="base-template">
+    	<put-attribute name="title" value="SGS - Acerca de..."  />
+        <put-attribute name="page-content"  value="/WEB-INF/views/about.jsp" />
+    </definition>
+    
+    <definition name="homeProductos" extends="base-template">
+    	<put-attribute name="title" value="SGS - Productos"  />
+        <put-attribute name="page-content"  value="/WEB-INF/views/productos/index.jsp" />
+    </definition>
+    
+    <definition name="homeOrdenes" extends="base-template">
+    	<put-attribute name="title" value="SGS - Ordenes"  />
+        <put-attribute name="page-content"  value="/WEB-INF/views/ordenes/index.jsp" />
+    </definition>
     
 
     
