@@ -34,7 +34,7 @@
 <body>
 
 
-	<div id="wrapper">
+	<div id="wrapper" class="toggled">
 
 
 		<!-- Sidebar -->
@@ -51,8 +51,6 @@
 						<!-- Page Content -->
 						<tiles:insertAttribute name="page-content">
 						</tiles:insertAttribute>
-
-
 
 					</div>
 				</div>

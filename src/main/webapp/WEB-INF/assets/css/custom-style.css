@@ -1,5 +1,13 @@
-
+/*
+	Documentacion de bootstrap: 
+		https://getbootstrap.com/docs/3.3/css/#tables 
+		http://howtodoinjava.com/spring/spring-restful/spring-restful-client-resttemplate-example/
+*/
 
 body{
 /* 	background-color: red !important; */
+}
+
+*{
+	border-radius: 0 !important;
 }

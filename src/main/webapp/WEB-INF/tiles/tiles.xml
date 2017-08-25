@@ -26,6 +26,11 @@
         <put-attribute name="page-content"  value="/WEB-INF/views/productos/index.jsp" />
     </definition>
     
+    <definition name="nuevoProducto" extends="base-template">
+    	<put-attribute name="title" value="SGS - Nuevo Producto"  />
+        <put-attribute name="page-content"  value="/WEB-INF/views/productos/nuevo.jsp" />
+    </definition>
+    
     <definition name="homeOrdenes" extends="base-template">
     	<put-attribute name="title" value="SGS - Ordenes"  />
         <put-attribute name="page-content"  value="/WEB-INF/views/ordenes/index.jsp" />
