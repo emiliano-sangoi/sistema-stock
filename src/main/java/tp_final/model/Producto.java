@@ -31,8 +31,7 @@ public class Producto {
 	private Float precio;
 	
 	@Column(name="cantidad", nullable=false)
-	@NotNull(message="Este campo no puede quedar vacio")
-	@Size(min=0, message="La cantidad ingresada debe ser un numero positivo.")
+	@NotNull(message="Este campo no puede quedar vacio")	
 	private Integer cantidad;	
 	
 

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
@@ -49,15 +50,14 @@ public class ProductosController {
 	}
 	
 	@RequestMapping(value= {"/productos/nuevo"}, method=RequestMethod.POST)
-	public String nuevoProductoPOST(@Valid Producto producto, Errors errores, Model model) {
-		
+	public String nuevoProductoPOST(@Valid Producto producto, Errors errores, Model model) {		
 		
 		Boolean codigoOk = APIHandler.productoExiste(producto);
-		if(codigoOk) {
+		/*if(codigoOk) {
 			System.out.println("codigo de producto OK");
 		}else {
 			System.out.println("codigo de producto invalido");
-		}
+		}*/
 		model.addAttribute("codigoOk", codigoOk);
 		
 		if(errores.hasErrors() || codigoOk == false) {
@@ -81,6 +81,82 @@ public class ProductosController {
 		em.close();
 		
 		return "redirect:/productos";
+	}
+	
+	@RequestMapping(value= {"/productos/editar/{id}"}, method=RequestMethod.GET)
+	public String modificarProductoGET(@PathVariable Long id, Model model) {
+		
+		EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+		Producto producto = em.find(Producto.class, id);
+		if(producto != null) {
+			model.addAttribute("producto", producto);
+			return "editarProducto";
+		}
+		
+		return "redirect:/productos";
+	}
+	
+	@RequestMapping(value= {"/productos/editar/{id}"}, method=RequestMethod.POST)
+	public String modificarProductoGuardar(@PathVariable Long id, @ModelAttribute("producto") @Valid Producto producto, Errors errores, Model model) {						
+						
+		Boolean codigoOk = APIHandler.productoExiste(producto);			
+		if(errores.hasErrors() || codigoOk == false) {
+			model.addAttribute("codigoOk", false);
+			return "editarProducto";				
+		}
+		
+		//System.out.println("PRODUCTO: " + producto.getCodigo() + " - ID: " + producto.getId());
+			
+		//si no hay errores, actualizar...
+		EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		Producto prodOld = em.find(Producto.class, id);
+		tx.begin();
+		try {	
+			prodOld.setCodigo(producto.getCodigo());
+			prodOld.setDescripcion(producto.getDescripcion());
+			prodOld.setPrecio(producto.getPrecio());
+			prodOld.setCantidad(producto.getCantidad());
+			//producto = em.merge(producto);
+			//em.persist(producto);
+			tx.commit();
+			
+		}catch(Exception e) {
+			tx.rollback();
+		}
+		
+		em.close();
+				
+		return "redirect:/productos";
+	}
+	
+	
+	@RequestMapping(value= {"/productos/borrar/{id}"}, method=RequestMethod.GET)
+	public String borrarUsuario(@PathVariable Long id) {
+		
+		EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+		Producto producto = em.find(Producto.class, id);
+		if(producto != null) {
+			
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			
+			try {				
+				em.remove(producto);
+				tx.commit();
+				
+			}catch(Exception e) {
+				tx.rollback();
+			}
+						
+			em.close();
+			
+			return "redirect:/productos";
+		}
+		
+		
+		
+		return "productos";
 	}
 
 }

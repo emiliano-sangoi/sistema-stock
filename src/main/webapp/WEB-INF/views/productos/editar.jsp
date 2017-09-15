@@ -1,15 +1,15 @@
-<!-- Nuevo producto -->
+<!-- Editar producto -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <div class="row">
 	<div class="text-left col-xs-6">
-		<h1>Nuevo producto</h1>
+		<h1>Modificar producto</h1>
 		<hr />
 	</div>
 	<div class="text-right col-xs-6">
 		<div class="btn-group" role="group" aria-label="...">
 			<a href="/tp_final/productos" class="btn btn-warning  btn-md"> 
-			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 				Cancelar
 			</a>
 			<a href="#menu-toggle" class="btn btn-default  btn-md"
@@ -21,7 +21,7 @@
 	</div>
 </div>
 
-<form:form method="POST" action="/tp_final/productos/nuevo"
+<form:form method="POST" action="/tp_final/productos/editar/${producto.id}"
 	modelAttribute="producto">
 
 	<div class="form-group">
@@ -77,9 +77,6 @@
 			</div>
 
 		</div>
-
-
-
 
 
 	<button type="submit" class="btn btn-primary">

@@ -59,23 +59,45 @@
 
 		</div>
 		<!-- /#page-content-wrapper -->
+	
 
 	</div>
+	
+
 	<!-- /#wrapper -->
 
+
+	<!-- 	Templates -->
+	<div class="alert alert-danger alert-dismissable hidden" id="advertencia_elim_registro">
+  		<p>
+  			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  			<strong>Advertencia!</strong> <span class="adv-msg"></span> 			
+  		</p>
+  		<br/>
+  		<p class="text-left">
+  			<a href="/tp_final/productos/borrar/" class="btn btn-danger adv-btn-confirmar">Confirmar</a>
+  		</p>
+	</div>
 
 
 	<!--  JS -->
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
-	<script src="${ pageContext.request.contextPath }/assets/js/jquery.js"></script>
+<%-- 	<script src="${ pageContext.request.contextPath }/assets/js/jquery.js"></script> --%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 	<!-- Bootstrap CSS Core - Latest compiled and minified JavaScript -->
 	<!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
 	<script
 		src="${ pageContext.request.contextPath }/assets/js/bootstrap.min.js">
 	</script>
+	
+	<script src="${ pageContext.request.contextPath }/assets/js/custom.js">
+	
+			
+	</script>
+	
 
 	<!-- Menu Toggle Script -->
 	<script>
@@ -83,6 +105,34 @@
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
+    
+    
+    /**
+    	Muestra una advertencia antes de eliminar un producto.
+    */
+    $('.btn-eliminar').click(function(e) {
+    	e.preventDefault();
+    	var elem = $(this);
+    	
+    	var id_prod = elem.data('id-producto');
+    	var desc_prod = elem.data('desc-producto');
+    	var cod_prod = elem.data('cod-producto');
+    	
+    	//buscar template y actualizar contenido:
+        var tpl = $('#advertencia_elim_registro').clone();
+    	tpl.removeClass('hidden').find('.adv-msg').html(" El producto <strong>'" + desc_prod + "'</strong>" + " (Código: " + cod_prod + ") " + "se borrarra definitivamente. Esta seguro que desea realizar esta acción?");
+    		
+    	//actualizar url con el id seleccionado:
+    	var a = tpl.find('.adv-btn-confirmar');
+    	a.attr('href', a.attr('href') + id_prod);
+    	
+    	//Mostrar mensaje
+    	$('.mgs-container').html('').append(tpl).hide().fadeIn();
+    	    	    	
+    });
+    
+    
+    
     </script>
 
 

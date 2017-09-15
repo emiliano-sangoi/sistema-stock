@@ -26,9 +26,12 @@
 <hr />
 <p class="lead">Listado de productos existentes</p>
 
+<div class="mgs-container"></div>
+
 <div class="table-responsive">
 		<table class="table table-hover table-stripped">
 			<thead>
+				<th>#</th>
 				<th>Codigo</th>
 				<th>Descripción</th>
 				<th>Precio</th>
@@ -40,16 +43,20 @@
 			<c:forEach var="producto" items="${productos}" varStatus="status">
 				
 				<tr>
+					<td>${status.count}</td>
 					<td>${producto.codigo}</td>
 					<td>${producto.descripcion}</td>
 					<td>$ ${producto.precio}</td>
 					<td>${producto.cantidad}</td>
 					<td>
-						<a href="" class="btn btn-xs btn-primary" >
+						<a href="/tp_final/productos/editar/${producto.id}" class="btn btn-xs btn-primary" >
 							<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 							Editar
 						</a>
-						<a href="" class="btn btn-xs btn-danger">
+						<a href="" class="btn btn-xs btn-danger btn-eliminar"
+						 data-id-producto="${producto.id}" 
+						 data-desc-producto="${producto.descripcion}"
+						 data-cod-producto="${producto.codigo}">
 							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 							Eliminar
 						</a>
