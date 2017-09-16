@@ -56,16 +56,12 @@
 				</div>
 			</div>
 
-
 		</div>
 		<!-- /#page-content-wrapper -->
 	
-
 	</div>
 	
-
 	<!-- /#wrapper -->
-
 
 	<!-- 	Templates -->
 	<div class="alert alert-danger alert-dismissable hidden" id="advertencia_elim_registro">

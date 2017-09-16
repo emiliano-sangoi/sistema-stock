@@ -52,7 +52,8 @@ public class ProductosController {
 	@RequestMapping(value= {"/productos/nuevo"}, method=RequestMethod.POST)
 	public String nuevoProductoPOST(@Valid Producto producto, Errors errores, Model model) {		
 		
-		Boolean codigoOk = APIHandler.productoExiste(producto);
+		APIHandler apiHandler = new APIHandler();
+		Boolean codigoOk = apiHandler.productoExiste(producto);
 		/*if(codigoOk) {
 			System.out.println("codigo de producto OK");
 		}else {
@@ -98,8 +99,9 @@ public class ProductosController {
 	
 	@RequestMapping(value= {"/productos/editar/{id}"}, method=RequestMethod.POST)
 	public String modificarProductoGuardar(@PathVariable Long id, @ModelAttribute("producto") @Valid Producto producto, Errors errores, Model model) {						
-						
-		Boolean codigoOk = APIHandler.productoExiste(producto);			
+					
+		APIHandler apiHandler = new APIHandler();
+		Boolean codigoOk = apiHandler.productoExiste(producto);			
 		if(errores.hasErrors() || codigoOk == false) {
 			model.addAttribute("codigoOk", false);
 			return "editarProducto";				

@@ -1,9 +1,12 @@
 package tp_final.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -32,7 +35,7 @@ public class Producto {
 	
 	@Column(name="cantidad", nullable=false)
 	@NotNull(message="Este campo no puede quedar vacio")	
-	private Integer cantidad;	
+	private Integer cantidad;
 	
 
 	public Producto(String codigo, String descripcion, Float precio, Integer cantidad) {
