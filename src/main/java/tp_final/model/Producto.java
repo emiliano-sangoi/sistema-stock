@@ -88,6 +88,18 @@ public class Producto {
 	public Long getId() {
 		return id;
 	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return this.codigo;
+	}
+	
+	public String getLabel() {
+		return this.codigo + " - " + this.descripcion;
+	}
+	
+	
 	
 	
 	

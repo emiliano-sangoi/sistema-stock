@@ -1,5 +1,6 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="tp_final.model.Order" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +20,8 @@
 	href="${ pageContext.request.contextPath }/assets/css/simple-sidebar.css">
 <link rel="stylesheet" type="text/css"
 	href="${ pageContext.request.contextPath }/assets/css/custom-style.css">
+<link rel="stylesheet" type="text/css"
+	href="${ pageContext.request.contextPath }/assets/css/spaces.min.css">		
 
 <!-- Bootstrap CSS Core -->
 <!-- Latest compiled and minified CSS -->
@@ -44,7 +47,13 @@
 
 		<!-- Page Content -->
 		<div id="page-content-wrapper">
-			<div class="container-fluid">
+			<div class="container-fluid">				
+					<c:if test="${ not empty errorGlobal }">
+						<div class="row alert alert-warning">
+							${ not empty errorGlobal }
+						</div>
+					</c:if>				
+				</div>
 				<div class="row">
 					<div class="col-lg-12">
 
@@ -79,25 +88,36 @@
 	<!--  JS -->
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
-<%-- 	<script src="${ pageContext.request.contextPath }/assets/js/jquery.js"></script> --%>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	
+	<script>
+		$(document).ready(function(){
+			// importar codigos para identificar la operaciones:
+			ACTION_NUEVO_ITEM = ${Order.ACTION_NUEVO_ITEM};
+			ACTION_GUARDAR_PEDIDO = ${Order.ACTION_GUARDAR_PEDIDO};
+			ACTION_DEFAULT = ${Order.ACTION_DEFAULT};
+			
+			
+		});			
+	</script>
 
 	<!-- Bootstrap CSS Core - Latest compiled and minified JavaScript -->
 	<!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
 	<script
-		src="${ pageContext.request.contextPath }/assets/js/bootstrap.min.js">
+		src="${ pageContext.request.contextPath }/assets/js/bootstrap.min.js">	
+		
 	</script>
 	
-	<script src="${ pageContext.request.contextPath }/assets/js/custom.js">
+	<script src="${ pageContext.request.contextPath }/assets/js/custom.js"></script>
 	
-			
-	</script>
+	
 	
 
 	<!-- Menu Toggle Script -->
 	<script>
     $("#menu-toggle").click(function(e) {
+    	
+    	
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });

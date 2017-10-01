@@ -43,15 +43,15 @@
 				<tr>
 					<td>${status.count}</td>
 					<td>
-						<fmt:formatDate value="${pedido.fechaCreacion}" pattern="dd/MM/yyyy HH:mm:ss a"/>
+						<fmt:formatDate value="${pedido.date}" pattern="dd/MM/yyyy HH:mm:ss a"/>
 					</td>
-					<td>${pedido.estado}</td>		
+					<td>${pedido.status}</td>		
 					<td>
 						<a href="" class="btn btn-xs btn-success disabled" >
 							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 							Cambiar estado
 						</a>
-						<a href="/tp_final/pedidos/editar/${pedido.id}" class="btn btn-xs btn-primary disabled" >
+						<a href="/tp_final/pedidos/modificar/${pedido.id}" class="btn btn-xs btn-primary" >
 							<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 							Editar
 						</a>

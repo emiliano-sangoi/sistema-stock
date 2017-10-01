@@ -40,6 +40,18 @@
     	<put-attribute name="title" value="SGS - Pedidos"  />
         <put-attribute name="page-content"  value="/WEB-INF/views/pedidos/index.jsp" />
     </definition>
+       
+    <definition name="nuevoPedido" extends="base-template">
+    	<put-attribute name="title" value="SGS - Nuevo Pedido"  />
+        <put-attribute name="page-content"  value="/WEB-INF/views/pedidos/nuevo.jsp" />
+    </definition>
+    
+    <definition name="modificarPedido" extends="base-template">
+    	<put-attribute name="title" value="SGS - Modificar Pedido"  />
+        <put-attribute name="page-content"  value="/WEB-INF/views/pedidos/modificar.jsp" />
+    </definition>
+    
+
     
 
     

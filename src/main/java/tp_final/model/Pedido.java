@@ -1,10 +1,12 @@
 package tp_final.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.validation.Valid;
 
-@Entity
+
 public class Pedido {
 	
 	final static String ESTADO_OPEN = "open";
@@ -16,13 +18,13 @@ public class Pedido {
 	
 	private String estado;
 	
-	private LineaPedido[] detalle;
-	
-	
+	@Valid
+	private ArrayList<LineaPedido> detalle;
 	
 	public Pedido() {	
 		this.fechaCreacion = new Date();
 		this.estado = Pedido.ESTADO_OPEN;
+		
 	}
 
 	public Pedido(String id, Date fechaCreacion, String estado) {
@@ -64,11 +66,11 @@ public class Pedido {
 		this.estado = estado;
 	}
 
-	public LineaPedido[] getDetalle() {
+	public ArrayList<LineaPedido> getDetalle() {
 		return detalle;
 	}
 
-	public void setDetalle(LineaPedido[] detalle) {
+	public void setDetalle(ArrayList<LineaPedido> detalle) {
 		this.detalle = detalle;
 	}
 	
