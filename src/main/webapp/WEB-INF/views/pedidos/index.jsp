@@ -26,12 +26,11 @@
 <hr />
 <p class="lead">Listado de pedidos existentes</p>
 
-<div class="mgs-container"></div>
-
 <div class="table-responsive">
 		<table class="table table-hover table-stripped">
 			<thead>
 				<th>#</th>
+				<th>ID</th>
 				<th>Fecha de creación</th>
 				<th>Estado</th>
 				<th>Operaciones</th>
@@ -42,6 +41,7 @@
 				
 				<tr>
 					<td>${status.count}</td>
+					<td>${pedido.id}</td>
 					<td>
 						<fmt:formatDate value="${pedido.date}" pattern="dd/MM/yyyy HH:mm:ss a"/>
 					</td>
@@ -55,7 +55,12 @@
 							<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 							Editar
 						</a>
-						<a href="" class="btn btn-xs btn-danger btn-eliminar disabled">
+						<a href="" class="btn btn-xs btn-danger btn-eliminar-recurso" 
+							data-alerta-recurso-id="${pedido.id}" 
+							data-alerta-recurso-desc="${pedido.id}" 
+							data-alerta-action="/tp_final/pedidos/borrar/${pedido.id}" 
+							data-alerta-tipo="PEDIDO">
+												
 							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 							Eliminar
 						</a>

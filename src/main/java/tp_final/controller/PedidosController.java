@@ -12,9 +12,13 @@ import javax.validation.constraints.Null;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import tp_final.helpers.APIHandler;
 import tp_final.helpers.JPAUtil;
@@ -23,7 +27,8 @@ import tp_final.model.Order;
 import tp_final.model.Producto;
 
 @Controller
-public class PedidosController {
+@SessionAttributes({"flashMsgText", "flashMsgResult"})
+public class PedidosController {	
 	
 		/**
 		 * Listado de pedidos
@@ -32,14 +37,25 @@ public class PedidosController {
 		 * @return
 		 */
 		@RequestMapping(value= {"/pedidos"})
-		public String index(Model model) {
+		public String index(Model model, 
+				@ModelAttribute("flashMsgText") final String msg,
+				@ModelAttribute("flashMsgResult") final String result,
+				SessionStatus status) {
 			
 			APIHandler apiHandler = new APIHandler();
 			if(apiHandler.fetchOrders()){
-				model.addAttribute("pedidos", apiHandler.getOrders() );
+				model.addAttribute("pedidos", apiHandler.getOrders() );				
+				/*if(msg != null && msg.length() > 0) {
+					model.addAttribute("flashMsgText", msg );
+					model.addAttribute("flashMsgResult", result );
+				}	*/			
+				
 			}else {
-				model.addAttribute("errorGlobal", apiHandler.getLastError());
+				model.addAttribute("flashMsgText", apiHandler.getLastError());
+				model.addAttribute("flashMsgResult", "danger");		
 			}
+			
+			status.setComplete();
 			
 			//apiHandler.fetchOrder("59bcafb5b2d7841d360ab268");
 			//apiHandler.fetchOrders();
@@ -55,11 +71,13 @@ public class PedidosController {
 		 * @return
 		 */
 		@RequestMapping(value= {"/pedidos/nuevo"}, method=RequestMethod.GET)
-		public String nuevoPedidoGET(Model model) {
+		public String nuevoPedidoGET(Model model,  SessionStatus status) {
 			
 			Order order = new Order();
 			//order.addItem(new Item());			
 			model.addAttribute("order", order);
+			
+			status.setComplete();
 			
 			return "nuevoPedido";
 		}
@@ -77,6 +95,7 @@ public class PedidosController {
 		public String nuevoPedidoPOST(@Valid Order order,
 				Errors errores, 
 				Model model, 
+				RedirectAttributes redirectAttributes,
 				@Null HttpServletRequest request) {	
 			
 						
@@ -107,10 +126,13 @@ public class PedidosController {
 			APIHandler apiHandler = new APIHandler();	
 			//Guardar y redireccionar:
 			if(apiHandler.newOrder(order)) {
+				redirectAttributes.addFlashAttribute("flashMsgText", "El pedido se ha creado correctamente.");
+				redirectAttributes.addFlashAttribute("flashMsgResult", "success");
 				return "redirect:/pedidos";
 			}
 			
-			model.addAttribute("errorGlobal", apiHandler.getLastError());
+			model.addAttribute("msgGlobalTexto", apiHandler.getLastError());
+			model.addAttribute("msgGlobalResultado", "danger");		
 			return "nuevoPedido";
 
 						
@@ -126,7 +148,8 @@ public class PedidosController {
 				model.addAttribute("productos", this.getProductos());		
 				model.addAttribute("order", apiHandler.getOrders()[0] );
 			}else {
-				model.addAttribute("errorGlobal", "No existe ningun pedido con el id proporcionado." );
+				model.addAttribute("msgGlobalTexto", apiHandler.getLastError());
+				model.addAttribute("msgGlobalResultado", "danger");		
 			}
 						
 			return "modificarPedido";
@@ -136,7 +159,9 @@ public class PedidosController {
 		@RequestMapping(value= {"/pedidos/modificar"}, method=RequestMethod.POST)
 		public String modificarPedidoPOST(@Valid Order order,
 				Errors errores, 
-				Model model) {						
+				Model model,
+				RedirectAttributes redirectAttributes
+				) {						
 			
 			model.addAttribute("productos", this.getProductos());			
 			
@@ -163,14 +188,38 @@ public class PedidosController {
 			
 			APIHandler apiHandler = new APIHandler();
 			//Guardar y redireccionar:
-			if(apiHandler.updateOrder(order)) {				
+			if(apiHandler.updateOrder(order)) {
+				redirectAttributes.addFlashAttribute("flashMsgText", "El pedido ha sido modificado exitosamente.");
+				redirectAttributes.addFlashAttribute("flashMsgResult", "success");
 				return "redirect:/pedidos";
 			}else {
-				model.addAttribute("errorGlobal", apiHandler.getLastError());				
+				
+				model.addAttribute("flashMsgText", apiHandler.getLastError());
+				model.addAttribute("flashMsgResult", "danger");					
 			}
 				
 			return "modificarPedido";
 		
+		}
+		
+		@RequestMapping(value= {"/pedidos/borrar/{id}"}, method=RequestMethod.GET)
+		public String borrarPedido(@PathVariable String id, Model model, RedirectAttributes redirectAttributes) {	
+			
+			APIHandler apiHandler = new APIHandler();
+			
+			//Guardar y redireccionar:
+			if(apiHandler.deleteOrder(id)) {
+				//redirectAttributes.addAttribute(attributeValue)
+				
+				redirectAttributes.addFlashAttribute("flashMsgText", "El pedido ha sido borrado exitosamente.");
+				redirectAttributes.addFlashAttribute("flashMsgResult", "success");
+				return "redirect:/pedidos";
+			}else {
+				redirectAttributes.addAttribute("msgGlobalTexto", apiHandler.getLastError());
+			}			
+			
+			
+			return "redirect:/pedidos";
 		}
 		
 		/**
@@ -216,6 +265,19 @@ public class PedidosController {
 			
 			return productos;			
 		}
+		
+		
+		@ModelAttribute("flashMsgText")
+	    public String getFlashMsgText() {
+	        return new String();
+
+	    }
+		
+		@ModelAttribute("flashMsgResult")
+	    public String getFlashMsgResult() {
+	        return new String();
+
+	    }
 		
 		/**
 		 * Devuelve los productos disponibles en funcion de los productos ya elegidos en el pedido.

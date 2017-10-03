@@ -26,7 +26,6 @@
 
 <p class="lead">A continuación, defina los productos incluidos en el pedido.</p>
 
-
 <form:form method="POST" action="/tp_final/pedidos/nuevo" 
 	modelAttribute="order" id="idFormPedido"	
 	data-proximo="${func:length(order.products) }">	

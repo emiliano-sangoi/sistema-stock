@@ -16,5 +16,14 @@ body{
 	font-weight: bold;	
 }
 
+.mgs-container{
+	position: fixed; 
+	top:10px; 
+	/*bottom: 10px;*/
+	left:10px; 
+	right:10px; 
+	z-index: 2000;
+}
+
 
 

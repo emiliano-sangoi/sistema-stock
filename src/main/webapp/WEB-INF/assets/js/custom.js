@@ -86,6 +86,9 @@ $(document).ready(function(){
 	});
 	
 	
+	 
+	
+	
 	
 	
 	
@@ -105,24 +108,6 @@ $(document).ready(function(){
 		
 		//enviar formulario:
 		$("form").submit();
-		
-		//obtener indice del elemento a eliminar:
-		//var target = $(this).data("idx");		
-		
-		//console.log("Se presiono: " + target);
-		
-		//buscar y borrar elemento:		
-		//$(".row .item" + target).remove();
-		
-		//console.log(".row .item" + target);
-		
-		//actualizar "puntero":
-		//var last = formPedido.data("idx-ultimo");
-		//formPedido.data("idx-ultimo", last - 1 );
-		
-		
-		//Submitear el form para actualizar cambios:
-		//$("form").submit();
 		
 		
 	});

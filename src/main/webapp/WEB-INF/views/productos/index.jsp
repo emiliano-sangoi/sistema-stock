@@ -26,8 +26,6 @@
 <hr />
 <p class="lead">Listado de productos existentes</p>
 
-<div class="mgs-container"></div>
-
 <div class="table-responsive">
 		<table class="table table-hover table-stripped">
 			<thead>

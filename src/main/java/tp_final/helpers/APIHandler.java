@@ -325,6 +325,34 @@ public class APIHandler {
 		return true;
 	}
 	
+	/**
+	 * Borrar un pedido del backend
+	 * 
+	 * @param idOrder
+	 * @return
+	 */
+	public boolean deleteOrder(String idOrder) {					
+		
+		RestTemplate restTemplate = new RestTemplate();
+		HttpEntity<String> httpEntity = new HttpEntity<String>("", this.headers);
+		ResponseEntity<String> result = restTemplate.exchange(
+				endpointBase + "order/" + idOrder , //endpoint
+				HttpMethod.DELETE, 
+				httpEntity, // headers con la info de autorizacion
+				String.class);			
+		
+		System.out.println("RESULTADO: " + result.getBody());
+		
+		this.lastError = "";
+
+		if (! result.getStatusCode().is2xxSuccessful()) {
+			this.lastError = "Ocurrio un error al intentar borrar el pedido. Codigo de respuesta de la API: " + result.getStatusCodeValue();
+			return false;
+		}
+		
+		return true;
+	}
+	
 	public String getLastError() {
 		return lastError;
 	}

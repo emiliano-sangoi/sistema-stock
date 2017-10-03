@@ -47,12 +47,20 @@
 
 		<!-- Page Content -->
 		<div id="page-content-wrapper">
-			<div class="container-fluid">				
-					<c:if test="${ not empty errorGlobal }">
-						<div class="row alert alert-warning">
-							${ not empty errorGlobal }
+			<div class="container-fluid">	
+				<div class="mgs-container">
+					<c:if test="${ not empty flashMsgText }">
+						<div class="alert alert-${ flashMsgResult } alert-dismissable flash-msg">
+							<p>
+								<a href="#" class="close" data-dismiss="alert"
+									aria-label="close">&times;</a>
+									 <strong>${ flashMsgText }</strong> <span class="adv-msg"></span>
+							</p>
 						</div>
-					</c:if>				
+					</c:if>
+
+				</div>			
+									
 				</div>
 				<div class="row">
 					<div class="col-lg-12">
@@ -80,7 +88,7 @@
   		</p>
   		<br/>
   		<p class="text-left">
-  			<a href="/tp_final/productos/borrar/" class="btn btn-danger adv-btn-confirmar">Confirmar</a>
+  			<a href="" class="btn btn-danger adv-btn-confirmar">Confirmar</a>
   		</p>
 	</div>
 
@@ -97,6 +105,8 @@
 			ACTION_GUARDAR_PEDIDO = ${Order.ACTION_GUARDAR_PEDIDO};
 			ACTION_DEFAULT = ${Order.ACTION_DEFAULT};
 			
+			
+			$(".flash-msg").delay(5000).fadeOut();
 			
 		});			
 	</script>
@@ -144,6 +154,36 @@
     	
     	//Mostrar mensaje
     	$('.mgs-container').html('').append(tpl).hide().fadeIn();
+    	    	    	
+    });
+    
+    $('.btn-eliminar-recurso').click(function(e) {
+    	e.preventDefault();
+    	var elem = $(this);
+    	
+    	var alerta_recurso_id = elem.data('alerta-recurso-id');
+    	var alerta_recurso_desc = elem.data('alerta-recurso-desc');
+    	var alerta_action = elem.data("alerta-action");
+    	var alerta_tipo = elem.data("alerta-tipo");//PRODUCTO o PEDIDO
+    	//var cod_prod = elem.data('cod-producto');
+    	
+    	
+    	if(alerta_tipo == "PRODUCTO" || alerta_tipo == "PEDIDO" ){
+    		
+    		//buscar template y actualizar contenido:
+            var tpl = $('#advertencia_elim_registro').clone();
+        	tpl.removeClass('hidden').find('.adv-msg').html(" El elemento <strong>'" + alerta_recurso_desc + "'</strong>" + " se borrarra definitivamente. Esta seguro que desea realizar esta acción?");
+        		
+        	//actualizar url con el id seleccionado:
+        	var a = tpl.find('.adv-btn-confirmar');
+        	a.attr('href', alerta_action);
+        	
+        	//Mostrar mensaje
+        	$('.mgs-container').html('').append(tpl).hide().fadeIn();
+    		
+    		
+    	}
+    	
     	    	    	
     });
     
