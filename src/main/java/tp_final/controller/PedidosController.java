@@ -42,13 +42,10 @@ public class PedidosController {
 				@ModelAttribute("flashMsgResult") final String result,
 				SessionStatus status) {
 			
-			APIHandler apiHandler = new APIHandler();
+			APIHandler apiHandler = new APIHandler();						
+			
 			if(apiHandler.fetchOrders()){
-				model.addAttribute("pedidos", apiHandler.getOrders() );				
-				/*if(msg != null && msg.length() > 0) {
-					model.addAttribute("flashMsgText", msg );
-					model.addAttribute("flashMsgResult", result );
-				}	*/			
+				model.addAttribute("pedidos", apiHandler.getOrders() );					
 				
 			}else {
 				model.addAttribute("flashMsgText", apiHandler.getLastError());
@@ -56,10 +53,6 @@ public class PedidosController {
 			}
 			
 			status.setComplete();
-			
-			//apiHandler.fetchOrder("59bcafb5b2d7841d360ab268");
-			//apiHandler.fetchOrders();
-			
 			
 			return "homePedidos";
 		}
@@ -73,11 +66,8 @@ public class PedidosController {
 		@RequestMapping(value= {"/pedidos/nuevo"}, method=RequestMethod.GET)
 		public String nuevoPedidoGET(Model model,  SessionStatus status) {
 			
-			Order order = new Order();
-			//order.addItem(new Item());			
+			Order order = new Order();			
 			model.addAttribute("order", order);
-			
-			status.setComplete();
 			
 			return "nuevoPedido";
 		}
@@ -120,36 +110,29 @@ public class PedidosController {
 			
 			if(errores.hasErrors()) {
 				return "nuevoPedido";			
-			}
-			
+			}			
 			
 			APIHandler apiHandler = new APIHandler();	
 			//Guardar y redireccionar:
 			if(apiHandler.newOrder(order)) {
-				redirectAttributes.addFlashAttribute("flashMsgText", "El pedido se ha creado correctamente.");
-				redirectAttributes.addFlashAttribute("flashMsgResult", "success");
-				return "redirect:/pedidos";
+				return setMsgYRedireccionar(redirectAttributes, "El pedido se ha creado correctamente.", "success");				
+			}else {
+				return setMsgYRedireccionar(redirectAttributes, apiHandler.getLastError(), "warning");
 			}
-			
-			model.addAttribute("msgGlobalTexto", apiHandler.getLastError());
-			model.addAttribute("msgGlobalResultado", "danger");		
-			return "nuevoPedido";
 
-						
 		}
 		
 		@RequestMapping(value= {"/pedidos/modificar/{id}"}, method=RequestMethod.GET)
-		public String modificarPedidoGET(@PathVariable String id, Model model) {
+		public String modificarPedidoGET(@PathVariable String id, Model model, RedirectAttributes redirectAttributes) {
 			
 			APIHandler apiHandler = new APIHandler();	
-			apiHandler.fetchOrder(id);
+
 			//Guardar y redireccionar:
 			if(apiHandler.fetchOrder(id) && apiHandler.getOrders().length >= 1) {	
 				model.addAttribute("productos", this.getProductos());		
 				model.addAttribute("order", apiHandler.getOrders()[0] );
 			}else {
-				model.addAttribute("msgGlobalTexto", apiHandler.getLastError());
-				model.addAttribute("msgGlobalResultado", "danger");		
+				return setMsgYRedireccionar(redirectAttributes, apiHandler.getLastError(), "warning");
 			}
 						
 			return "modificarPedido";
@@ -189,17 +172,11 @@ public class PedidosController {
 			APIHandler apiHandler = new APIHandler();
 			//Guardar y redireccionar:
 			if(apiHandler.updateOrder(order)) {
-				redirectAttributes.addFlashAttribute("flashMsgText", "El pedido ha sido modificado exitosamente.");
-				redirectAttributes.addFlashAttribute("flashMsgResult", "success");
-				return "redirect:/pedidos";
+				return setMsgYRedireccionar(redirectAttributes, "El pedido ha sido modificado exitosamente.", "success");
 			}else {
-				
-				model.addAttribute("flashMsgText", apiHandler.getLastError());
-				model.addAttribute("flashMsgResult", "danger");					
+				return setMsgYRedireccionar(redirectAttributes, apiHandler.getLastError(), "warning");					
 			}
-				
-			return "modificarPedido";
-		
+
 		}
 		
 		@RequestMapping(value= {"/pedidos/borrar/{id}"}, method=RequestMethod.GET)
@@ -207,19 +184,28 @@ public class PedidosController {
 			
 			APIHandler apiHandler = new APIHandler();
 			
-			//Guardar y redireccionar:
+			//Guardar y redireccionar:							
 			if(apiHandler.deleteOrder(id)) {
-				//redirectAttributes.addAttribute(attributeValue)
-				
-				redirectAttributes.addFlashAttribute("flashMsgText", "El pedido ha sido borrado exitosamente.");
-				redirectAttributes.addFlashAttribute("flashMsgResult", "success");
-				return "redirect:/pedidos";
+				return setMsgYRedireccionar(redirectAttributes, "El pedido ha sido borrado exitosamente.", "success");				
 			}else {
-				redirectAttributes.addAttribute("msgGlobalTexto", apiHandler.getLastError());
+				return setMsgYRedireccionar(redirectAttributes, apiHandler.getLastError(), "warning");
 			}			
+									
+		}			
+		
+		
+		@RequestMapping(value= {"/pedidos/confirmar/{id}"}, method=RequestMethod.GET)
+		public String confirmarPedido(@PathVariable String id, Model model, RedirectAttributes redirectAttributes) {
 			
+			APIHandler apiHandler = new APIHandler();	
 			
-			return "redirect:/pedidos";
+			//Guardar y redireccionar:
+			if(apiHandler.markAsReceived(id)) {	
+				return setMsgYRedireccionar(redirectAttributes, "El pedido con codigo: "+ id + " ha sido confirmado exitosamente.", "success");
+			}else {
+				return setMsgYRedireccionar(redirectAttributes, apiHandler.getLastError(), "warning");
+			}
+	
 		}
 		
 		/**
@@ -278,6 +264,20 @@ public class PedidosController {
 	        return new String();
 
 	    }
+		
+		/**
+		 * Funcion auxiliar para setear un msg y redireccionar al home de pedidos en donde se muestran
+		 * 
+		 * @param redirectAttributes
+		 * @param msg
+		 * @param result
+		 * @return
+		 */
+		private String setMsgYRedireccionar(RedirectAttributes redirectAttributes, String msg, String result) {
+			redirectAttributes.addFlashAttribute("flashMsgText", msg);
+			redirectAttributes.addFlashAttribute("flashMsgResult", result);
+			return "redirect:/pedidos";
+		}
 		
 		/**
 		 * Devuelve los productos disponibles en funcion de los productos ya elegidos en el pedido.

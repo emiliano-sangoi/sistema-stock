@@ -127,7 +127,9 @@ public class Order {
 	}		
 	
 	
-	
+	public boolean isOpen() {
+		return this.status.toLowerCase().equals("open");
+	}
 	
 	
 	

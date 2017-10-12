@@ -37,7 +37,7 @@
 <body>
 
 
-	<div id="wrapper" class="toggled">
+	<div id="wrapper" class="">
 
 
 		<!-- Sidebar -->

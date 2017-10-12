@@ -174,6 +174,8 @@ public class APIHandler {
 				this.entity, // headers con la info de autorizacion
 				String.class);
 		
+		System.out.println("=> fetchOrders(): " + result.getBody());
+		
 		//Para serializar deserializar el JSON:		
 		Gson gson = new Gson();
 		OrderResponse response = gson.fromJson(result.getBody(), OrderResponse.class);
@@ -214,6 +216,8 @@ public class APIHandler {
 				this.entity, // headers con la info de autorizacion
 				String.class
 		);
+		
+		System.out.println("=> fetchOrder(..): " + result.getBody());
 		
 		//Conversion string -> objeto
 		GsonBuilder gsonBuilder = new GsonBuilder();
@@ -275,8 +279,8 @@ public class APIHandler {
 				httpEntity, // headers con la info de autorizacion
 				String.class);				
 	
-		System.out.println(result.getBody());
-		
+		System.out.println("=> newOrder(..): " + result.getBody());
+				
 		this.lastError = "";
 		/**
 		 * tb podria compararse si es igual a 200
@@ -313,6 +317,8 @@ public class APIHandler {
 				httpEntity, // headers con la info de autorizacion
 				String.class);
 		
+		System.out.println("=> updateOrder(..): " + result.getBody());
+		
 		this.lastError = "";
 		/**
 		 * tb podria compararse si es igual a 200
@@ -341,7 +347,7 @@ public class APIHandler {
 				httpEntity, // headers con la info de autorizacion
 				String.class);			
 		
-		System.out.println("RESULTADO: " + result.getBody());
+		System.out.println("=> deleteOrder(..): " + result.getBody());
 		
 		this.lastError = "";
 
@@ -353,83 +359,42 @@ public class APIHandler {
 		return true;
 	}
 	
+	/**
+	 * Marca un pedido como recibido
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public boolean markAsReceived(String id) {
+		
+		RestTemplate restTemplate = new RestTemplate();
+		HttpEntity<String> httpEntity = new HttpEntity<String>("", this.headers);//sin esto tira error: 400 bad request
+		ResponseEntity<String> result = restTemplate.exchange(
+				endpointBase + "received_order/" + id , //endpoint
+				HttpMethod.PUT, 
+				httpEntity, // headers con la info de autorizacion
+				String.class);		
+		
+		System.out.println("=> markAsReceived(..): " + result.getBody());
+		
+		this.lastError = "";
+
+		if (! result.getStatusCode().is2xxSuccessful()) {
+			this.lastError = "Ocurrio un error al intentar confirmar el pedido. Codigo de respuesta de la API: " + result.getStatusCodeValue();
+			return false;
+		}
+		
+		return true;
+	}
+	
 	public String getLastError() {
 		return lastError;
 	}
 
 
-
 	public void setLastError(String lastError) {
 		this.lastError = lastError;
 	}
-	
-	
-	/*
-	public boolean altaPedido(Pedido pedido) {
-		
-		Order order = new Order();
-		
-		int c = pedido.getDetalle().size();
-		Item[] products = new Item[c];
-		for(int i = 0; i < c ; i++) {
-			Item item = new Item();
-			item.set_id("595ccec925647b09f0eb54aa");
-			item.setCount(pedido.getDetalle().get(i).getCant());
-			products[i] = item;
-		}
-		
-		order.setProducts(products);
-	
-		String uri = endpointBase + "order";		
-		MultiValueMap<String, String> headerss = new LinkedMultiValueMap<String, String>();
-		headerss.add("Content-Type", "application/json");
-		headerss.add("auth", "emiliano.sangoi@gmail.com");
-			
-		PedidoRequest ped = new PedidoRequest();
-		ped.setOrder(order);
 
-
-		HttpEntity<PedidoRequest> request = new HttpEntity<PedidoRequest>(ped, headerss);
-		RestTemplate restTemplate = new RestTemplate();		  
-		Order result = restTemplate.postForObject( uri, request, Order.class);
-
-		//System.out.println( "SI!!!! -> " + result.getProducts().length);
-		
-		
-		
-		return true;
-	}*/
-	
-/*public boolean altaPedido2(Pedido pedido) {
-		
-		Gson gson = new Gson();
-		String pedidoJson = gson.toJson(pedido.getDetalle());
-		
-		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>(); 
-		body.add("products", pedidoJson);
-		
-		System.out.println( "body " + pedidoJson);
-		
-		MultiValueMap<String, String> headerss = new LinkedMultiValueMap<String, String>();
-		headerss.add("Content-Type", "application/json");
-		headerss.add("auth", "emiliano.sangoi@gmail.com");
-		
-		// Note the body object as first parameter!
-		HttpEntity<?> httpEntity = new HttpEntity<Object>(body, headerss);
-
-		
-		String uri = endpointBase + "order";
-		RestTemplate restTemplate = new RestTemplate();
-		
-		ResponseEntity<String> model = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, String.class);
-
-		
-	
-		
-		return true;
-	}*/
-	
-	
-	
 
 }

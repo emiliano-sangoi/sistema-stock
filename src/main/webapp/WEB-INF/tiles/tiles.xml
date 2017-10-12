@@ -51,6 +51,12 @@
         <put-attribute name="page-content"  value="/WEB-INF/views/pedidos/modificar.jsp" />
     </definition>
     
+	<!-- Login -->
+    <definition name="login" template="/WEB-INF/template/template_1c.jsp">
+    	<put-attribute name="title" value="SGS - Login"/>
+        <put-attribute name="page-content"  value="/WEB-INF/views/login.jsp" />
+    </definition>
+    
 
     
 

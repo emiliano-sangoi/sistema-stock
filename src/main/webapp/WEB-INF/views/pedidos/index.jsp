@@ -30,8 +30,9 @@
 		<table class="table table-hover table-stripped">
 			<thead>
 				<th>#</th>
-				<th>ID</th>
+				<th>Código</th>
 				<th>Fecha de creación</th>
+				<th>Hora</th>
 				<th>Estado</th>
 				<th>Operaciones</th>
 			</thead>					
@@ -43,13 +44,18 @@
 					<td>${status.count}</td>
 					<td>${pedido.id}</td>
 					<td>
-						<fmt:formatDate value="${pedido.date}" pattern="dd/MM/yyyy HH:mm:ss a"/>
+						<fmt:formatDate value="${pedido.date}" pattern="dd/MM/yyyy"/>
 					</td>
-					<td>${pedido.status}</td>		
 					<td>
-						<a href="" class="btn btn-xs btn-success disabled" >
+						<fmt:formatDate value="${pedido.date}" pattern="HH:mm:ss a"/>
+					</td>
+					<td class="${pedido.isOpen() ? 'bg-warning' : 'bg-success' }">
+						${pedido.status}						
+					</td>		
+					<td>
+						<a href="/tp_final/pedidos/confirmar/${pedido.id}" class="btn btn-xs btn-success ${pedido.isOpen() ? '' : 'disabled' }" >
 							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-							Cambiar estado
+							Confirmar recepción
 						</a>
 						<a href="/tp_final/pedidos/modificar/${pedido.id}" class="btn btn-xs btn-primary" >
 							<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>

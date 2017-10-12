@@ -2,12 +2,14 @@ package tp_final.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import tp_final.config.WebSecConfig;
+
 
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer{
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return null;
+		return new Class[]{WebSecConfig.class};
 	}
 
 	@Override
