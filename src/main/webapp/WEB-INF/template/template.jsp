@@ -21,7 +21,10 @@
 <link rel="stylesheet" type="text/css"
 	href="${ pageContext.request.contextPath }/assets/css/custom-style.css">
 <link rel="stylesheet" type="text/css"
-	href="${ pageContext.request.contextPath }/assets/css/spaces.min.css">		
+	href="${ pageContext.request.contextPath }/assets/css/spaces.min.css">	
+	
+<!-- 	Font awesome	 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 
 <!-- Bootstrap CSS Core -->
 <!-- Latest compiled and minified CSS -->
@@ -103,8 +106,7 @@
 			// importar codigos para identificar la operaciones:
 			ACTION_NUEVO_ITEM = ${Order.ACTION_NUEVO_ITEM};
 			ACTION_GUARDAR_PEDIDO = ${Order.ACTION_GUARDAR_PEDIDO};
-			ACTION_DEFAULT = ${Order.ACTION_DEFAULT};
-			
+			ACTION_DEFAULT = ${Order.ACTION_DEFAULT};			
 			
 			$(".flash-msg").delay(5000).fadeOut();
 			
@@ -113,11 +115,7 @@
 
 	<!-- Bootstrap CSS Core - Latest compiled and minified JavaScript -->
 	<!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
-	<script
-		src="${ pageContext.request.contextPath }/assets/js/bootstrap.min.js">	
-		
-	</script>
-	
+	<script src="${ pageContext.request.contextPath }/assets/js/bootstrap.min.js"></script>	
 	<script src="${ pageContext.request.contextPath }/assets/js/custom.js"></script>
 	
 	
@@ -125,72 +123,37 @@
 
 	<!-- Menu Toggle Script -->
 	<script>
-    $("#menu-toggle").click(function(e) {
-    	
-    	
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
+	    $("#menu-toggle").click(function(e) {    	    	
+	        e.preventDefault();
+	        $("#wrapper").toggleClass("toggled");
+	    });
     
     
-    /**
-    	Muestra una advertencia antes de eliminar un producto.
-    */
-    $('.btn-eliminar').click(function(e) {
-    	e.preventDefault();
-    	var elem = $(this);
-    	
-    	var id_prod = elem.data('id-producto');
-    	var desc_prod = elem.data('desc-producto');
-    	var cod_prod = elem.data('cod-producto');
-    	
-    	//buscar template y actualizar contenido:
-        var tpl = $('#advertencia_elim_registro').clone();
-    	tpl.removeClass('hidden').find('.adv-msg').html(" El producto <strong>'" + desc_prod + "'</strong>" + " (Código: " + cod_prod + ") " + "se borrarra definitivamente. Esta seguro que desea realizar esta acción?");
-    		
-    	//actualizar url con el id seleccionado:
-    	var a = tpl.find('.adv-btn-confirmar');
-    	a.attr('href', a.attr('href') + id_prod);
-    	
-    	//Mostrar mensaje
-    	$('.mgs-container').html('').append(tpl).hide().fadeIn();
-    	    	    	
-    });
-    
-    $('.btn-eliminar-recurso').click(function(e) {
-    	e.preventDefault();
-    	var elem = $(this);
-    	
-    	var alerta_recurso_id = elem.data('alerta-recurso-id');
-    	var alerta_recurso_desc = elem.data('alerta-recurso-desc');
-    	var alerta_action = elem.data("alerta-action");
-    	var alerta_tipo = elem.data("alerta-tipo");//PRODUCTO o PEDIDO
-    	//var cod_prod = elem.data('cod-producto');
-    	
-    	
-    	if(alerta_tipo == "PRODUCTO" || alerta_tipo == "PEDIDO" ){
-    		
-    		//buscar template y actualizar contenido:
-            var tpl = $('#advertencia_elim_registro').clone();
-        	tpl.removeClass('hidden').find('.adv-msg').html(" El elemento <strong>'" + alerta_recurso_desc + "'</strong>" + " se borrarra definitivamente. Esta seguro que desea realizar esta acción?");
-        		
-        	//actualizar url con el id seleccionado:
-        	var a = tpl.find('.adv-btn-confirmar');
-        	a.attr('href', alerta_action);
-        	
-        	//Mostrar mensaje
-        	$('.mgs-container').html('').append(tpl).hide().fadeIn();
-    		
-    		
-    	}
-    	
-    	    	    	
-    });
-    
-    
+	    /**
+	    	Muestra una advertencia antes de eliminar un producto.
+	    */    
+	    $('.btn-eliminar-recurso').click(function(e) {
+	    	e.preventDefault();
+	    	var elem = $(this);
+	    	
+	    	var alerta_recurso_id = elem.data('alerta-recurso-id');
+	    	var alerta_recurso_desc = elem.data('alerta-recurso-desc');
+	    	var alerta_action = elem.data("alerta-action");    	
+	    		
+	   		//buscar template y actualizar contenido:
+	        var tpl = $('#advertencia_elim_registro').clone();
+	       	tpl.removeClass('hidden').find('.adv-msg').html(" El elemento <strong>'" + alerta_recurso_desc + "'</strong>" + " se borrarra definitivamente. Esta seguro que desea realizar esta acción?");
+	       		
+	       	//actualizar url con el id seleccionado:
+	       	var a = tpl.find('.adv-btn-confirmar');
+	       	a.attr('href', alerta_action);
+	       	
+	       	//Mostrar mensaje
+	       	$('.mgs-container').html('').append(tpl).hide().fadeIn();
+	    		    		    	    	    	   
+	    });       
     
     </script>
-
 
 </body>
 </html>

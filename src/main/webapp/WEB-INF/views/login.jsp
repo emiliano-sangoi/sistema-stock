@@ -7,10 +7,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <div class="container">
-<header class="well">
-	<h1 class="text-center">Sistema de Gesti&oacute;n de Stock</h1>
+<header class="bg-gris" id="headerLogin">
+	<h1 class="text-center">Sistema de Gesti&oacute;n de Pedidos</h1>
 </header>
-<div class="row">
+<div class="row" id="loginOuter">
 	<div class="col-sm-6">
 		<h2>Bienvenido!!!</h2>
 		<br/>
@@ -22,7 +22,7 @@
 	</div>
 	<div class="col-sm-6">
 		<c:url value="/login" var="loginVar" />
-		<form action="${loginVar}" method="post" id="formLogin" class="bg-success">
+		<form action="${loginVar}" method="post" id="formLogin" class="">
 			<div class="form-group">
 				<label for="username">Nombre de usuario:</label> 
 				<input type="text" required="true"

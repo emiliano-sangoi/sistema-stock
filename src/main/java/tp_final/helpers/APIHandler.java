@@ -1,18 +1,18 @@
 package tp_final.helpers;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
-import javax.validation.constraints.Null;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
@@ -27,10 +27,7 @@ import tp_final.api.OrderRequest;
 import tp_final.api.OrderResponse;
 import tp_final.model.Item;
 import tp_final.model.Order;
-import tp_final.model.Pedido;
-import tp_final.model.Producto;
-import tp_final.util.PedidoRequest;
-import tp_final.util.APIOrderResponse;
+import tp_final.model.Product;
 
 public class APIHandler {
 	
@@ -39,8 +36,7 @@ public class APIHandler {
 	private HttpHeaders headers;
 	private JsonDeserializer<OrderResponse> orderResponseDeserializer;
 	private Order[] orders;
-	private String lastError;
-	
+	private String lastError;	
     
     public APIHandler() {
     	
@@ -68,8 +64,7 @@ public class APIHandler {
 			public OrderResponse deserialize(JsonElement jsonElement, Type arg1, JsonDeserializationContext arg2)
 					throws JsonParseException {								
 				
-				JsonObject jsonAPIResponse = jsonElement.getAsJsonObject();								
-				
+				JsonObject jsonAPIResponse = jsonElement.getAsJsonObject();												
 				JsonObject dataAsJson = jsonAPIResponse.get("data").getAsJsonObject();								
 				
 				Gson gson = new Gson();
@@ -86,78 +81,36 @@ public class APIHandler {
     	
     }
 	
-	
-	
-	public Boolean productoExiste(Producto producto) {
-		
+    /**
+     * Verifica la existencia de un producto
+     * 
+     * @param codProducto
+     * @return
+     */
+	public boolean productoExiste(String codProducto) {
+		this.lastError = "";
+
+
+		RestTemplate restTemplate = new RestTemplate();
 		try {
-			if(producto.getCodigo() != null) {
-				final String uri = endpointBase + "product/{codigo}";
-				
-				//System.out.println(producto.getCodigo().toString());
-			     
-				HashMap<String, String> params = new HashMap<String, String>();
-				params.put("codigo", producto.getCodigo().toString());
-				//params.put("codigo", "595ccd3225647b09f0eb54a9");							
-				
-				/*HttpHeaders headers = new HttpHeaders();
-			    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			    headers.set("auth", "emiliano.sangoi@gmail.com");
-			    HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);*/
-				     
-				RestTemplate restTemplate = new RestTemplate();
-				//String result = restTemplate.getFor.getForObject(uri, String.class, entity,  params);
-				ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.GET, this.entity, String.class, params);							
-			
-				System.out.println(result);
-				
-				
+			ResponseEntity<String> result = restTemplate.exchange(endpointBase + "product/" + codProducto,
+					HttpMethod.GET, this.entity, String.class);
+
+			if (result.getStatusCode().is2xxSuccessful()) {
 				return true;
-				
 			}
-				
-		}catch(org.springframework.web.client.HttpServerErrorException e) {						
-				
+
+		} catch (org.springframework.web.client.HttpServerErrorException e) {
+			// si se le pasa cualquier cosa como id la api deberia devolver 404, pero
+			// devuelve 500
+			this.lastError = "Ocurrio un error al intentar verificar la existencia del producto.";
+
 		}
-		
-		
+
 		return false;
-		
-		
 	}
 	
 	
-
-
-	/**
-	 * Obtiene todos los pedidos de la API
-	 * @return
-	 */
-/*	public Pedido[] getPedidos() {
-		
-		HttpHeaders headers = new HttpHeaders();
-	    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-	    headers.set("auth", "emiliano.sangoi@gmail.com");
-	    //headers.setContentType(MediaType.APPLICATION_JSON);
-		
-		String uri = endpointBase + "order";
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.GET, this.entity, String.class);
-		
-		//Convertir el response HTTP en un arreglo de Pedidos
-		// para manejarlos mas comodamente:
-		Gson gson = new Gson();
-		APIOrderResponse response = gson.fromJson(result.getBody(), APIOrderResponse.class);
-		
-		Pedido[] pedidos = response.getPedidos();		
-		//System.out.println(response.toString());
-		//System.out.println("C = " + pedidos.length);
-		//System.out.println("LP = " + pedidos[0].getDetalle().size());
-		
-		
-		return response.getPedidos();
-		
-	}*/
 	
 
 	/**
@@ -180,11 +133,7 @@ public class APIHandler {
 		Gson gson = new Gson();
 		OrderResponse response = gson.fromJson(result.getBody(), OrderResponse.class);
 		
-		//System.out.println(result.getBody());
-		//System.out.println(response.getData().length + "");
-		//System.out.println(response.getStatus());
-		//System.out.println(response.getOrders() == null ? "es null" : "no es null");
-		//System.out.println("" + response.getOrders().length);
+		this.lastError = "";
 		
 		if(result.getStatusCode().is2xxSuccessful()) {			
 			this.orders = response.getOrders();
@@ -247,23 +196,7 @@ public class APIHandler {
 	 * @param order
 	 * @return
 	 */
-	public boolean newOrder(Order order) {
-		
-		
-		/*Item item = new Item();
-		item.setId("595ccec925647b09f0eb54aa");
-		item.setCount(2);
-		Item item2 = new Item();
-		item2.setId("595ccd3225647b09f0eb54a9");
-		item2.setCount(88);*/
-		//Item[] products = new Item[2];
-		
-		//products[0] = item;
-		//products[1] = item2;
-		/*Order o = new Order();
-		o.addItem(item);
-		o.addItem(item2);*/
-		//o.setProducts(products);
+	public boolean newOrder(Order order) {		
 		
 		OrderRequest newOrderRequest = new OrderRequest();
 		newOrderRequest.setOrder(order);
@@ -384,7 +317,56 @@ public class APIHandler {
 			return false;
 		}
 		
+		//actualizar productos:
+		this.updateProducts(result);
+		
 		return true;
+	}
+	
+	/**
+	 * Funcion auxiliar que actualiza el stock de productos
+	 * 
+	 * @param result
+	 */
+	private void updateProducts(ResponseEntity<String> result) {
+		
+		//Conversion string -> objeto
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(OrderResponse.class, this.orderResponseDeserializer);
+		Gson gson = gsonBuilder.create();
+		OrderResponse response = gson.fromJson(result.getBody(), OrderResponse.class);
+				
+		ArrayList<Item> products = (response.getOrders()[0]).getProducts();
+		System.out.println("=> productos: " + products.size() );
+		EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+		String jpql = "SELECT p FROM Product p WHERE codigo = :codigo";
+		Query query = em.createQuery(jpql);
+		
+		for(int i=0 ; i < products.size(); i++) {
+				
+			//buscar producto
+			Item item = products.get(i);
+			query.setParameter("codigo", item.getId());
+			Product prod = (Product) query.getSingleResult();
+			
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			try {
+				
+				//actualizar stock
+				Integer dif = prod.getCantidad() - item.getCount() ;	
+				prod.setCantidad( dif );				
+				tx.commit();
+				
+				//puede quedar negativo pero el TP no pedia ningún tipo de control..
+				
+			}catch(Exception e) {
+				tx.rollback();
+			}
+							
+		}
+	
+		em.close();				
 	}
 	
 	public String getLastError() {

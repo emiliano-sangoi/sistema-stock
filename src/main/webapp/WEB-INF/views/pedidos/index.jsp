@@ -57,15 +57,14 @@
 							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 							Confirmar recepción
 						</a>
-						<a href="/tp_final/pedidos/modificar/${pedido.id}" class="btn btn-xs btn-primary" >
+						<a href="/tp_final/pedidos/modificar/${pedido.id}" class="btn btn-xs btn-primary ${pedido.isOpen() ? '' : 'disabled' }" >
 							<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 							Editar
 						</a>
 						<a href="" class="btn btn-xs btn-danger btn-eliminar-recurso" 
 							data-alerta-recurso-id="${pedido.id}" 
 							data-alerta-recurso-desc="${pedido.id}" 
-							data-alerta-action="/tp_final/pedidos/borrar/${pedido.id}" 
-							data-alerta-tipo="PEDIDO">
+							data-alerta-action="/tp_final/pedidos/borrar/${pedido.id}" >
 												
 							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 							Eliminar

@@ -22,7 +22,7 @@
 </div>
 
 <form:form method="POST" action="/tp_final/productos/nuevo"
-	modelAttribute="producto">
+	modelAttribute="product">
 
 	<div class="form-group">
 		<form:label path="codigo">
@@ -33,7 +33,7 @@
 	<div>
 		<form:errors path="codigo" element="p" cssClass="alert alert-danger" ></form:errors>
 		
-		<c:if test="${codigoOk == false}">
+		<c:if test="${producto_existe == false}">
 			<p class="alert alert-danger">El codigo ingresado no corresponde a ningun producto existente.</p>
 		</c:if>
 		

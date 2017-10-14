@@ -24,7 +24,7 @@ import tp_final.helpers.APIHandler;
 import tp_final.helpers.JPAUtil;
 import tp_final.model.Item;
 import tp_final.model.Order;
-import tp_final.model.Producto;
+import tp_final.model.Product;
 
 @Controller
 @SessionAttributes({"flashMsgText", "flashMsgResult"})
@@ -200,7 +200,7 @@ public class PedidosController {
 			APIHandler apiHandler = new APIHandler();	
 			
 			//Guardar y redireccionar:
-			if(apiHandler.markAsReceived(id)) {	
+			if(apiHandler.markAsReceived(id)) {					
 				return setMsgYRedireccionar(redirectAttributes, "El pedido con codigo: "+ id + " ha sido confirmado exitosamente.", "success");
 			}else {
 				return setMsgYRedireccionar(redirectAttributes, apiHandler.getLastError(), "warning");
@@ -242,12 +242,12 @@ public class PedidosController {
 		 * @return
 		 */
 		@SuppressWarnings("unchecked")
-		private List<Producto> getProductos() {
+		private List<Product> getProductos() {
 			
 			EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();			
-			String sql = "SELECT p FROM Producto p";			
+			String sql = "SELECT p FROM Product p";			
 			Query query = em.createQuery(sql);
-			List<Producto> productos = query.getResultList();
+			List<Product> productos = query.getResultList();
 			
 			return productos;			
 		}

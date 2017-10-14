@@ -21,8 +21,8 @@
 	</div>
 </div>
 
-<form:form method="POST" action="/tp_final/productos/editar/${producto.id}"
-	modelAttribute="producto">
+<form:form method="POST" action="/tp_final/productos/editar/${id}"
+	modelAttribute="product">
 
 	<div class="form-group">
 		<form:label path="codigo">

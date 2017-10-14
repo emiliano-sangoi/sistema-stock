@@ -1,7 +1,5 @@
 package tp_final.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,12 +7,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.validation.Valid;
 
-import org.hibernate.mapping.Map;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -22,11 +14,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.client.RestTemplate;
 
 import tp_final.helpers.APIHandler;
 import tp_final.helpers.JPAUtil;
-import tp_final.model.Producto;
+import tp_final.model.Product;
 
 @Controller
 public class ProductosController {
@@ -35,8 +26,8 @@ public class ProductosController {
 	public String index(Model model) {
 		
 		EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
-		Query query = em.createQuery("SELECT p FROM Producto p");
-		List<Producto> productos = query.getResultList();		
+		Query query = em.createQuery("SELECT p FROM Product p");
+		List<Product> productos = query.getResultList();		
 		model.addAttribute("productos", productos);								
 		em.close();	
 		
@@ -45,23 +36,18 @@ public class ProductosController {
 	
 	@RequestMapping(value= {"/productos/nuevo"}, method=RequestMethod.GET)
 	public String nuevoProductoGET(Model model) {
-		model.addAttribute("producto", new Producto());
+		model.addAttribute("product", new Product());
 		return "nuevoProducto";
 	}
 	
 	@RequestMapping(value= {"/productos/nuevo"}, method=RequestMethod.POST)
-	public String nuevoProductoPOST(@Valid Producto producto, Errors errores, Model model) {		
+	public String nuevoProductoPOST(@Valid Product producto, Errors errores, Model model) {		
 		
 		APIHandler apiHandler = new APIHandler();
-		Boolean codigoOk = apiHandler.productoExiste(producto);
-		/*if(codigoOk) {
-			System.out.println("codigo de producto OK");
-		}else {
-			System.out.println("codigo de producto invalido");
-		}*/
-		model.addAttribute("codigoOk", codigoOk);
+		boolean producto_existe = apiHandler.productoExiste(producto.getCodigo());		
+		model.addAttribute("producto_existe", producto_existe);
 		
-		if(errores.hasErrors() || codigoOk == false) {
+		if(errores.hasErrors() || producto_existe == false) {
 			return "nuevoProducto";
 		}
 		
@@ -88,9 +74,9 @@ public class ProductosController {
 	public String modificarProductoGET(@PathVariable Long id, Model model) {
 		
 		EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
-		Producto producto = em.find(Producto.class, id);
+		Product producto = em.find(Product.class, id);
 		if(producto != null) {
-			model.addAttribute("producto", producto);
+			model.addAttribute("product", producto);
 			return "editarProducto";
 		}
 		
@@ -98,29 +84,25 @@ public class ProductosController {
 	}
 	
 	@RequestMapping(value= {"/productos/editar/{id}"}, method=RequestMethod.POST)
-	public String modificarProductoGuardar(@PathVariable Long id, @ModelAttribute("producto") @Valid Producto producto, Errors errores, Model model) {						
-					
+	public String modificarProductoGuardar(@PathVariable Long id, @ModelAttribute("product") @Valid Product product, Errors errores, Model model) {														
+
 		APIHandler apiHandler = new APIHandler();
-		Boolean codigoOk = apiHandler.productoExiste(producto);			
-		if(errores.hasErrors() || codigoOk == false) {
-			model.addAttribute("codigoOk", false);
+		boolean producto_existe = apiHandler.productoExiste(product.getCodigo());			
+		if(errores.hasErrors() || producto_existe == false) {
+			model.addAttribute("producto_existe", false);
 			return "editarProducto";				
 		}
-		
-		//System.out.println("PRODUCTO: " + producto.getCodigo() + " - ID: " + producto.getId());
-			
-		//si no hay errores, actualizar...
+	
+		//si no hay errores, actualizar...	
 		EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		Producto prodOld = em.find(Producto.class, id);
+		Product prodOld = em.find(Product.class, id);
 		tx.begin();
 		try {	
-			prodOld.setCodigo(producto.getCodigo());
-			prodOld.setDescripcion(producto.getDescripcion());
-			prodOld.setPrecio(producto.getPrecio());
-			prodOld.setCantidad(producto.getCantidad());
-			//producto = em.merge(producto);
-			//em.persist(producto);
+			prodOld.setCodigo(product.getCodigo());
+			prodOld.setDescripcion(product.getDescripcion());
+			prodOld.setPrecio(product.getPrecio());
+			prodOld.setCantidad(product.getCantidad());
 			tx.commit();
 			
 		}catch(Exception e) {
@@ -137,7 +119,7 @@ public class ProductosController {
 	public String borrarUsuario(@PathVariable Long id) {
 		
 		EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
-		Producto producto = em.find(Producto.class, id);
+		Product producto = em.find(Product.class, id);
 		if(producto != null) {
 			
 			EntityTransaction tx = em.getTransaction();

@@ -12,48 +12,48 @@
     </definition>
 
     <definition name="home" extends="base-template">
-    	<put-attribute name="title" value="SGS - Home"  />
+    	<put-attribute name="title" value="SGP - Home"  />
         <put-attribute name="page-content"  value="/WEB-INF/views/home.jsp" />
     </definition>
     
     <definition name="acerca_de" extends="base-template">
-    	<put-attribute name="title" value="SGS - Acerca de..."  />
+    	<put-attribute name="title" value="SGP - Acerca de..."  />
         <put-attribute name="page-content"  value="/WEB-INF/views/about.jsp" />
     </definition>
     
     <definition name="homeProductos" extends="base-template">
-    	<put-attribute name="title" value="SGS - Productos"  />
+    	<put-attribute name="title" value="SGP - Productos"  />
         <put-attribute name="page-content"  value="/WEB-INF/views/productos/index.jsp" />
     </definition>
     
     <definition name="nuevoProducto" extends="base-template">
-    	<put-attribute name="title" value="SGS - Nuevo Producto"  />
+    	<put-attribute name="title" value="SGP - Nuevo Producto"  />
         <put-attribute name="page-content"  value="/WEB-INF/views/productos/nuevo.jsp" />
     </definition>
     
     <definition name="editarProducto" extends="base-template">
-    	<put-attribute name="title" value="SGS - Modificar Producto"  />
+    	<put-attribute name="title" value="SGP - Modificar Producto"  />
         <put-attribute name="page-content"  value="/WEB-INF/views/productos/editar.jsp" />
     </definition>
     
     <definition name="homePedidos" extends="base-template">
-    	<put-attribute name="title" value="SGS - Pedidos"  />
+    	<put-attribute name="title" value="SGP - Pedidos"  />
         <put-attribute name="page-content"  value="/WEB-INF/views/pedidos/index.jsp" />
     </definition>
        
     <definition name="nuevoPedido" extends="base-template">
-    	<put-attribute name="title" value="SGS - Nuevo Pedido"  />
+    	<put-attribute name="title" value="SGP - Nuevo Pedido"  />
         <put-attribute name="page-content"  value="/WEB-INF/views/pedidos/nuevo.jsp" />
     </definition>
     
     <definition name="modificarPedido" extends="base-template">
-    	<put-attribute name="title" value="SGS - Modificar Pedido"  />
+    	<put-attribute name="title" value="SGP - Modificar Pedido"  />
         <put-attribute name="page-content"  value="/WEB-INF/views/pedidos/modificar.jsp" />
     </definition>
     
 	<!-- Login -->
     <definition name="login" template="/WEB-INF/template/template_1c.jsp">
-    	<put-attribute name="title" value="SGS - Login"/>
+    	<put-attribute name="title" value="SGP - Login"/>
         <put-attribute name="page-content"  value="/WEB-INF/views/login.jsp" />
     </definition>
     

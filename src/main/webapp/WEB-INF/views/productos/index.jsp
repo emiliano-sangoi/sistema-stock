@@ -51,10 +51,12 @@
 							<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 							Editar
 						</a>
-						<a href="" class="btn btn-xs btn-danger btn-eliminar"
-						 data-id-producto="${producto.id}" 
-						 data-desc-producto="${producto.descripcion}"
-						 data-cod-producto="${producto.codigo}">
+
+						<a href="" class="btn btn-xs btn-danger btn-eliminar-recurso" 
+							data-alerta-recurso-id="${producto.codigo}" 
+							data-alerta-recurso-desc="${producto.codigo}" 
+							data-alerta-action="/tp_final/productos/borrar/${producto.id}" 
+						>											
 							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 							Eliminar
 						</a>
