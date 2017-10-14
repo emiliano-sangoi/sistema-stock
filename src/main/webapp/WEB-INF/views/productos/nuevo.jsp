@@ -34,7 +34,7 @@
 		<form:errors path="codigo" element="p" cssClass="alert alert-danger" ></form:errors>
 		
 		<c:if test="${producto_existe == false}">
-			<p class="alert alert-danger">El codigo ingresado no corresponde a ningun producto existente.</p>
+			<p class="alert alert-danger">El c&oacute;digo ingresado no corresponde a ning&uacute;n producto existente.</p>
 		</c:if>
 		
 	</div>

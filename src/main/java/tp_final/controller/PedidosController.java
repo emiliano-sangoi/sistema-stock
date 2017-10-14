@@ -129,8 +129,12 @@ public class PedidosController {
 
 			//Guardar y redireccionar:
 			if(apiHandler.fetchOrder(id) && apiHandler.getOrders().length >= 1) {	
+				Order order = apiHandler.getOrders()[0];
+				if(order.isOpen() == false) {
+					return setMsgYRedireccionar(redirectAttributes, "El pedido: " + order.getId() + " no se puede modificar porque ya ha sido marcado como 'received'", "warning");
+				}
 				model.addAttribute("productos", this.getProductos());		
-				model.addAttribute("order", apiHandler.getOrders()[0] );
+				model.addAttribute("order", order );
 			}else {
 				return setMsgYRedireccionar(redirectAttributes, apiHandler.getLastError(), "warning");
 			}
@@ -172,7 +176,7 @@ public class PedidosController {
 			APIHandler apiHandler = new APIHandler();
 			//Guardar y redireccionar:
 			if(apiHandler.updateOrder(order)) {
-				return setMsgYRedireccionar(redirectAttributes, "El pedido ha sido modificado exitosamente.", "success");
+				return setMsgYRedireccionar(redirectAttributes, "El pedido ha sido modificado exitósamente.", "success");
 			}else {
 				return setMsgYRedireccionar(redirectAttributes, apiHandler.getLastError(), "warning");					
 			}
@@ -201,7 +205,7 @@ public class PedidosController {
 			
 			//Guardar y redireccionar:
 			if(apiHandler.markAsReceived(id)) {					
-				return setMsgYRedireccionar(redirectAttributes, "El pedido con codigo: "+ id + " ha sido confirmado exitosamente.", "success");
+				return setMsgYRedireccionar(redirectAttributes, "El pedido con código: "+ id + " ha sido confirmado exitosamente.", "success");
 			}else {
 				return setMsgYRedireccionar(redirectAttributes, apiHandler.getLastError(), "warning");
 			}
@@ -225,7 +229,7 @@ public class PedidosController {
 					items.add(prodId);
 				}else {
 					//si algun id del producto se definio dos veces -> error
-					String msg = "No pueden existir dos items referenciando el mismo producto.  Producto nro. " + (i+1) + " repetido. Codigo: " + prodId;
+					String msg = "No pueden existir dos items referenciando el mismo producto.  Producto nro. " + (i+1) + " repetido. Código: " + prodId;
 					model.addAttribute("errorItemsDuplicados", msg);	
 					errores.reject(msg);
 					return true;

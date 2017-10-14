@@ -30,8 +30,8 @@
 		<table class="table table-hover table-stripped">
 			<thead>
 				<th>#</th>
-				<th>Codigo</th>
-				<th>Descripción</th>
+				<th>C&oacute;digo</th>
+				<th>Descripci&oacute;n</th>
 				<th>Precio</th>
 				<th>Cantidad</th>
 				<th>Operaciones</th>
@@ -45,7 +45,7 @@
 					<td>${producto.codigo}</td>
 					<td>${producto.descripcion}</td>
 					<td>$ ${producto.precio}</td>
-					<td>${producto.cantidad}</td>
+					<td class="${producto.cantidad <= 0 ? 'text-danger negrita' : ''}">${producto.cantidad}</td>
 					<td>
 						<a href="/tp_final/productos/editar/${producto.id}" class="btn btn-xs btn-primary" >
 							<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>

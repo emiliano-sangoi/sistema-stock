@@ -7,22 +7,26 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <div class="container">
-<header class="bg-gris" id="headerLogin">
-	<h1 class="text-center">Sistema de Gesti&oacute;n de Pedidos</h1>
-</header>
+<!-- <header class="bg-gris" id="headerLogin"> -->
+<!-- 	<h1 class="text-center">Sistema de Gesti&oacute;n de Pedidos</h1> -->
+<!-- </header> -->
 <div class="row" id="loginOuter">
-	<div class="col-sm-6">
-		<h2>Bienvenido!!!</h2>
-		<br/>
-		<p class="lead">Para ingresar utilice 
-			<span class="negrita bg-ni-idea"><em>admin</em></span>
-			como nombre de usuario y contraseña.
-		
-		</p>
-	</div>
-	<div class="col-sm-6">
+
+	<div class="col-sm-offset-3 col-sm-6">
 		<c:url value="/login" var="loginVar" />
+		
 		<form action="${loginVar}" method="post" id="formLogin" class="">
+		
+			<h2><span class="negrita text-primary">SGP</span> - Bienvenido!!!</h2>
+			<br/>
+			<p class="">Para ingresar utilice 
+				<span class="negrita bg-ni-idea"><em>admin</em></span>
+				como nombre de usuario y contraseña.
+		
+			</p>
+		
+			<br/>
+			
 			<div class="form-group">
 				<label for="username">Nombre de usuario:</label> 
 				<input type="text" required="true"

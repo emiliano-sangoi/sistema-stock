@@ -25,12 +25,7 @@ public class HomeController {
     public String home(Model model) {	
 		
     	return "home";
-    }	
-	
-	@RequestMapping(value = {"/acerca-de"})
-    public String about(Model model) {		 
-    	return "acerca_de";
-    }
+    }		
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
   	public String login(
@@ -47,15 +42,7 @@ public class HomeController {
   		
   		return "login";
   	}
-	/*
-	@RequestMapping(value="/logout", method = RequestMethod.GET)
-	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
-	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    if (auth != null){    
-	        new SecurityContextLogoutHandler().logout(request, response, auth);
-	    }
-	    return "redirect:/login?logout";
-	}*/
+
 	
 
 }
