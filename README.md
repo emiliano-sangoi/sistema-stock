@@ -7,5 +7,6 @@ El proyecto permite realizar la gestión de productos y pedidos (alta, baja y mo
 Este proyecto fue realizado para el curso: "Desarrollo de Aplicaciones en Java", realizado entre Mayo y Agosto del 2017 en la Facultad de Ingeniería y Cs. Hídricas,
 
 ## Screenshoots
-![captura 1](https://github.com/emiliano-sangoi/sistema-stock/blob/master/sgp_screenshot1.png)
-![captura 2](/blob/master/sgp_screenshoot2.png)
+![captura 1](https://github.com/emiliano-sangoi/sistema-stock/blob/master/sgp_screenshot_login.png)
+![captura 2](https://github.com/emiliano-sangoi/sistema-stock/blob/master/sgp_screenshot1.png)
+![captura 3](https://github.com/emiliano-sangoi/sistema-stock/blob/master/sgp_screenshoot2.png)
